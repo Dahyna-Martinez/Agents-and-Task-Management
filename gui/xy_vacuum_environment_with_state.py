@@ -1,6 +1,8 @@
 import os.path
 from tkinter import *
-
+import random
+import sys
+from collections import deque
 from agents import *
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
@@ -17,11 +19,25 @@ class Gui(VacuumEnvironment):
         super().__init__(width, height)
         if elements is None:
             elements = ['D', 'W']
+        self.cleaned_blocks = deque(maxlen=4)  # Limit memory to last 5 cleaned blocks
         self.root = root
         self.create_frames()
         self.create_buttons()
         self.create_walls()
         self.elements = elements
+
+        self.move_count = 0
+        self.move_label = Label(self.root, text=f"Moves: {self.move_count}", font=("Courier", 10))
+        self.move_label.pack(side='left', anchor='w', padx=10, pady=5)
+
+        self.performance_score = 0
+        self.performance_label = Label(self.root, text=f"Performance: {self.performance_score}", font=("Courier", 10))
+        self.performance_label.pack(side='left', anchor='w', padx=10, pady=5)
+
+        self.dirt_cleaned = 0  # Track dirt cleaned
+        self.efficiency_label = Label(self.root, text=f"Efficiency: 0%", font=("Courier", 10))
+        self.efficiency_label.pack(side='left', anchor='w', padx=10, pady=5)
+        self.bump_counter = 0  # Track consecutive bumps
 
     def create_frames(self):
         """Adds frames to the GUI environment."""
@@ -38,8 +54,7 @@ class Gui(VacuumEnvironment):
             button_row = []
             for _ in range(7):
                 button = Button(frame, height=3, width=5, padx=2, pady=2)
-                button.config(
-                    command=lambda btn=button: self.display_element(btn))
+                button.config(command=lambda btn=button: self.display_element(btn))
                 button.pack(side='left')
                 button_row.append(button)
             self.buttons.append(button_row)
@@ -49,16 +64,12 @@ class Gui(VacuumEnvironment):
         for row, button_row in enumerate(self.buttons):
             if row == 0 or row == len(self.buttons) - 1:
                 for button in button_row:
-                    button.config(text='W', state='disabled',
-                                  disabledforeground='black')
+                    button.config(text='W', state='disabled', disabledforeground='black')
             else:
-                button_row[0].config(
-                    text='W', state='disabled', disabledforeground='black')
-                button_row[len(button_row) - 1].config(text='W',
-                                                       state='disabled', disabledforeground='black')
+                button_row[0].config(text='W', state='disabled', disabledforeground='black')
+                button_row[len(button_row) - 1].config(text='W', state='disabled', disabledforeground='black')
         # Place the agent in the centre of the grid.
-        self.buttons[3][3].config(
-            text='A', state='disabled', disabledforeground='black')
+        self.buttons[3][3].config(text='A', state='disabled', disabledforeground='black')
 
     def display_element(self, button):
         """Show the things on the GUI."""
@@ -73,17 +84,21 @@ class Gui(VacuumEnvironment):
 
     def execute_action(self, agent, action):
         """Determines the action the agent performs."""
-        xi, yi = (self.xi, self.yi)
+
+        xi, yi = self.xi, self.yi
+
         if action == 'Suck':
             dirt_list = self.list_things_at(agent.location, Dirt)
-            if dirt_list:
+            if dirt_list and agent.location not in self.cleaned_blocks:  # Check if block is not cleaned
                 dirt = dirt_list[0]
                 agent.performance += 100
+                self.dirt_cleaned += 1
+                self.bump_counter = 0  # Reset bump counter
                 self.delete_thing(dirt)
+                self.cleaned_blocks.append(agent.location)  # Append to deque (FIFO memory)
                 self.buttons[xi][yi].config(text='', state='normal')
                 xf, yf = agent.location
-                self.buttons[xf][yf].config(
-                    text='A', state='disabled', disabledforeground='black')
+                self.buttons[xf][yf].config(text='A', state='disabled', disabledforeground='black')
 
         else:
             agent.bump = False
@@ -92,15 +107,32 @@ class Gui(VacuumEnvironment):
             elif action == 'TurnLeft':
                 agent.direction += Direction.L
             elif action == 'Forward':
-                agent.bump = self.move_to(agent, agent.direction.move_forward(agent.location))
-                if not agent.bump:
-                    self.buttons[xi][yi].config(text='', state='normal')
-                    xf, yf = agent.location
-                    self.buttons[xf][yf].config(
-                        text='A', state='disabled', disabledforeground='black')
-
+                # Only move if the next block is not already cleaned
+                next_location = agent.direction.move_forward(agent.location)
+                if next_location not in self.cleaned_blocks:
+                    agent.bump = self.move_to(agent, next_location)
+                    if not agent.bump:
+                        self.buttons[xi][yi].config(text='', state='normal')
+                        xf, yf = agent.location
+                        self.buttons[xf][yf].config(text='A', state='disabled', disabledforeground='black')
+                else:
+                    agent.bump = True  # Simulate a bump if the block is cleaned
         if action != 'NoOp':
             agent.performance -= 1
+            self.move_count += 1
+            self.update_labels()
+            self.move_label.config(text=f"Moves: {self.move_count}")
+
+        self.performance_score = agent.performance
+        self.performance_label.config(text=f"Performance: {self.performance_score}")
+
+    def update_labels(self):
+        """Update the performance, move count, and efficiency labels."""
+        # Calculate efficiency as dirt cleaned / total moves
+        efficiency = (self.dirt_cleaned / self.move_count) * 100 if self.move_count > 0 else 0
+        self.move_label.config(text=f"Moves: {self.move_count}")
+        self.performance_label.config(text=f"Performance: {self.performance_score}")
+        self.efficiency_label.config(text=f"Efficiency: {efficiency:.2f}%")
 
     def read_env(self):
         """Reads the current state of the GUI environment."""
@@ -136,9 +168,17 @@ class Gui(VacuumEnvironment):
                             self.delete_thing(thing)
                             btn.config(text='', state='normal')
         self.add_thing(agt, location=(3, 3))
-        self.buttons[3][3].config(
-            text='A', state='disabled', disabledforeground='black')
+        self.buttons[3][3].config(text='A', state='disabled', disabledforeground='black')
 
+        self.move_count = 0
+        self.move_label.config(text=f"Moves: {self.move_count}")
+
+        agt.performance = 0
+        self.performance_score = 0
+        self.performance_label.config(text=f"Performance: {self.performance_score}")
+        self.dirt_cleaned = 0
+        self.move_count = 0
+        self.efficiency_label.config(text=f"Efficiency: 0.00%")
 
 def XYReflexAgentProgram(percept):
     """The modified SimpleReflexAgentProgram for the GUI environment."""
@@ -167,25 +207,30 @@ class XYReflexAgent(Agent):
         self.location = (3, 3)
         self.direction = Direction("up")
 
+def auto_run():
+    if env.dirt_cleaned >= 18 or env.move_count >= 500:#change the amount of dirt for different test
+        return  # Stop execution
+    env.update_env()  # Perform one step
+    root.after(300, auto_run)  # Repeat after 200 milliseconds (adjust the delay if needed)
 
-# TODO: Check the coordinate system.
-# TODO: Give manual choice for agent's location.
+
 if __name__ == "__main__":
     root = Tk()
     root.title("Vacuum Environment")
-    root.geometry("420x440")
+    root.geometry("420x490")
     root.resizable(0, 0)
     frame = Frame(root, bg='black')
-    reset_button = Button(frame, text='Reset', height=2,
-                          width=6, padx=2, pady=2)
+    reset_button = Button(frame, text='Reset', height=2, width=6, padx=2, pady=2)
     reset_button.pack(side='left')
-    next_button = Button(frame, text='Next', height=2,
-                         width=6, padx=2, pady=2)
+    next_button = Button(frame, text='Next', height=2, width=6, padx=2, pady=2)
     next_button.pack(side='left')
+    auto_button = Button(frame, text='Auto', height=2, width=6, padx=2, pady=2)
+    auto_button.pack(side='left')
     frame.pack(side='bottom')
     env = Gui(root)
     agt = XYReflexAgent(program=XYReflexAgentProgram)
     env.add_thing(agt, location=(3, 3))
     next_button.config(command=env.update_env)
     reset_button.config(command=lambda: env.reset_env(agt))
+    auto_button.config(command=lambda: auto_run())
     root.mainloop()
