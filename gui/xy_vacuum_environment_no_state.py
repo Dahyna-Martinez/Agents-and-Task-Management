@@ -26,7 +26,8 @@ class Gui(VacuumEnvironment):
         self.create_buttons()
         self.create_walls()
         self.elements = elements
-
+        self.max_dirt = 0  # Track the initial amount of dirt
+        self.total_dirt = 0  # Track total dirt
         self.move_count=0
         self.move_label = Label (self.root, text=f"Moves: {self.move_count}", font=("Courier", 10))
         self.move_label.pack(side= 'left', anchor='w', padx= 10, pady= 5)
@@ -77,6 +78,11 @@ class Gui(VacuumEnvironment):
         self.buttons[3][3].config(
             text='A', state='disabled', disabledforeground='black')
 
+    def update_total_dirt(self):
+        """Counts the total amount of dirt and updates the label."""
+        self.total_dirt = sum(1 for row in self.buttons for btn in row if btn['text'] == 'D')
+        #print(f"Total dirt on screen: {self.total_dirt}")  # Debugging print
+
     def display_element(self, button):
         """Show the things on the GUI."""
         txt = button['text']
@@ -87,6 +93,7 @@ class Gui(VacuumEnvironment):
                 button.config(text='')
             elif txt == '':
                 button.config(text='W')
+        self.update_total_dirt()  # Update total dirt count
 
     def execute_action(self, agent, action):
         """Determines the action the agent performs."""
@@ -98,6 +105,7 @@ class Gui(VacuumEnvironment):
                 agent.performance += 100
                 self.dirt_cleaned += 1
                 self.delete_thing(dirt)
+                self.update_total_dirt()  # Recalculate total dirt after cleaning
                 self.buttons[xi][yi].config(text='', state='normal')
                 xf, yf = agent.location
                 self.buttons[xf][yf].config(
@@ -126,6 +134,11 @@ class Gui(VacuumEnvironment):
         self.performance_score = agent.performance
         self.performance_label.config(text=f"Performance: {self.performance_score}")
 
+    def save_max_dirt(self):
+        """Save the initial amount of dirt before the Auto run starts."""
+        self.max_dirt = self.total_dirt
+        #print(f"Max Dirt Saved: {self.max_dirt}")  # Debugging
+
     def update_labels(self):
         """Update the performance, move count, and efficiency labels."""
         efficiency = (self.dirt_cleaned / self.move_count) * 100 if self.move_count > 0 else 0
@@ -146,9 +159,13 @@ class Gui(VacuumEnvironment):
                         self.add_thing(Dirt(), (i, j))
                     elif btn['text'] == self.elements[1]:
                         self.add_thing(Wall(), (i, j))
+        self.update_total_dirt()  # Update total dirt count
+
 
     def update_env(self):
         """Updates the GUI environment according to the current state."""
+        if env.max_dirt == 0:
+            env.save_max_dirt()  # Save max dirt only once at the start
         self.read_env()
         agt = self.agents[0]
         previous_agent_location = agt.location
@@ -182,6 +199,7 @@ class Gui(VacuumEnvironment):
 
 
 
+
 def XYReflexAgentProgram(percept):
     """The modified SimpleReflexAgentProgram for the GUI environment."""
     status, bump = percept
@@ -209,12 +227,15 @@ class XYReflexAgent(Agent):
         self.location = (3, 3)
         self.direction = Direction("up")
 
+
 def auto_run():
-    if env.dirt_cleaned >= 18 or env.move_count >= 500:#change the amount of dirt for different test
+    if env.max_dirt == 0:
+        env.save_max_dirt()  # Save max dirt only once at the start
+    if env.dirt_cleaned >= env.max_dirt or env.move_count >= 500:
+        #print("Auto Run Stopped")
         return  # Stop execution
     env.update_env()  # Perform one step
-    root.after(500, auto_run)  # Repeat after 200 milliseconds (adjust the delay if needed)
-
+    root.after(500, auto_run)  # Repeat every 500 milliseconds
 # TODO: Check the coordinate system.
 # TODO: Give manual choice for agent's location.
 if __name__ == "__main__":
