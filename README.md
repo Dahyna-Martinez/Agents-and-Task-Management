@@ -1,3 +1,23 @@
+# Agents-and-Task-Management
+Go to gui folder.
+
+To run exercise 2.11:
+1.Select vacuum_agent.py, code may ask you to download packages.
+2.If download packages fails, Run the program anyways.
+3.In the GUI select which location is dirty and press next to activate the agent.
+
+To run exercise 2.14 no memeory state:
+1.Select xy_vacuum_environment_no_state.py code may ask you to download packages.
+2.If download packages fails, Run the program anyways.
+3.In the GUI select which location is dirty and which locations have walls.
+4.Press next to activate the agent, unless you wish to automate the code press the auto button.
+
+
+To run exercise 2.14 memeory state:
+1.Select xy_vacuum_environment_with_state.py code may ask you to download packages.
+2.If download packages fails, Run the program anyways.
+3.In the GUI select which location is dirty and which locations have walls.
+4.Press next to activate the agent, unless you wish to automate the code press the auto button.
 
 
 # `aima-python` [![Build Status](https://travis-ci.org/aimacode/aima-python.svg?branch=master)](https://travis-ci.org/aimacode/aima-python) [![Binder](http://mybinder.org/badge.svg)](http://mybinder.org/repo/aimacode/aima-python)
@@ -206,4 +226,3 @@ Many thanks for contributions over the years. I got bug reports, corrected code,
 [utils]:../master/utils.py
 [text]:../master/text.py
 
-# Agents-and-Task-Management
