@@ -16,10 +16,11 @@ class Gui(VacuumEnvironment):
     perceptible_distance = 1
 
     def __init__(self, root, width=7, height=7, elements=None):
+        """Initializes the GUI environment."""
         super().__init__(width, height)
         if elements is None:
             elements = ['D', 'W']
-        self.cleaned_blocks = deque(maxlen=4)  # Limit memory to last 5 cleaned blocks
+        self.cleaned_blocks = deque(maxlen=4)  # Limit memory to last 4 cleaned blocks
         self.root = root
         self.create_frames()
         self.create_buttons()
@@ -31,14 +32,18 @@ class Gui(VacuumEnvironment):
         self.move_label = Label(self.root, text=f"Moves: {self.move_count}", font=("Courier", 10))
         self.move_label.pack(side='left', anchor='w', padx=10, pady=5)
 
+        #Keeps track of performance for the vacuum agent and displays it
         self.performance_score = 0
         self.performance_label = Label(self.root, text=f"Performance: {self.performance_score}", font=("Courier", 10))
         self.performance_label.pack(side='left', anchor='w', padx=10, pady=5)
 
+        #Keep track of dirt cleaned by the vacuum agent
         self.dirt_cleaned = 0  # Track dirt cleaned
         self.efficiency_label = Label(self.root, text=f"Efficiency: 0%", font=("Courier", 10))
         self.efficiency_label.pack(side='left', anchor='w', padx=10, pady=5)
-        self.bump_counter = 0  # Track consecutive bumps
+
+        # Track consecutive bumps
+        self.bump_counter = 0
 
     def create_frames(self):
         """Adds frames to the GUI environment."""
@@ -78,7 +83,11 @@ class Gui(VacuumEnvironment):
         #print(f"Total dirt on screen: {self.total_dirt}")  # Debugging print
 
     def display_element(self, button):
-        """Show the things on the GUI."""
+        """
+                Show the things on the GUI.
+                Parameters:
+                    button (button): The button used to display the element. Changes on clicks by the user.
+                """
         txt = button['text']
         if txt != 'A':
             if txt == 'W':
@@ -89,8 +98,16 @@ class Gui(VacuumEnvironment):
                 button.config(text='W')
         self.update_total_dirt()  # Update total dirt count
     def execute_action(self, agent, action):
-        """Determines the action the agent performs."""
+        """
+                        Change the location status (Dirty/Clean); track performance.
+                        Score 100 for each dirt cleaned; -1 for each move.
+                        Also keeps track of dirt cleaned by adding +1
 
+                        Parameters:
+                           agent (Agent): The vacuum agent.
+                           action(str): The action that the agent performs ('Right', 'Left', 'Suck', 'Noop').
+
+                        """
         xi, yi = self.xi, self.yi
 
         if action == 'Suck':
@@ -173,7 +190,13 @@ class Gui(VacuumEnvironment):
         xf, yf = agt.location
 
     def reset_env(self, agt):
-        """Resets the GUI environment to the initial state."""
+        """Resets the GUI environment to the initial state.
+
+               Parameters:
+                   agt (object): The agent that will be placed in the environment.
+                         It should have a `performance` attribute that is reset to 0.
+
+               """
         self.read_env()
         for i, btn_row in enumerate(self.buttons):
             for j, btn in enumerate(btn_row):
@@ -196,7 +219,20 @@ class Gui(VacuumEnvironment):
         self.efficiency_label.config(text=f"Efficiency: 0.00%")
 
 def XYReflexAgentProgram(percept):
-    """The modified SimpleReflexAgentProgram for the GUI environment."""
+    """
+            The modified SimpleReflexAgentProgram for the GUI environment.
+
+            Parameters:
+            percept (tuple): A tuple containing two elements:
+                - status (str): 'Clean' or 'Dirty', indicating the status of the current tile.
+                - bump (str): 'Bump' if the agent has hit a wall, otherwise an empty string.
+
+            Returns:
+            str: An action to be performed by the agent:
+                - 'Suck' if the current tile is dirty.
+                - 'TurnRight' or 'TurnLeft' if the agent randomly decides to turn.
+                - 'Forward' if the agent moves ahead.
+            """
     status, bump = percept
     if status == 'Dirty':
         return 'Suck'
@@ -215,21 +251,47 @@ def XYReflexAgentProgram(percept):
 
 
 class XYReflexAgent(Agent):
-    """The modified SimpleReflexAgent for the GUI environment."""
+    """
+            The modified SimpleReflexAgent for the GUI environment.
+
+            Attributes:
+            location (tuple): The initial position of the agent in the grid (default is (3,3)).
+            direction (Direction): The initial direction of the agent (default is "up").
+
+            Args:
+            program (function, optional): The agent's decision-making function that determines actions based on percepts.
+
+            """
 
     def __init__(self, program=None):
+        """
+            Initializes the XYReflexAgent with a default location and direction.
+
+             Parameters:
+             program (function, optional): The decision-making function for the agent.
+             Defaults to None, in which case the superclass handles it.
+        """
         super().__init__(program)
         self.location = (3, 3)
         self.direction = Direction("up")
 
 def auto_run():
+    """
+           Automatically runs the environment simulation by executing steps at regular intervals.
+
+           The simulation stops if either of the following conditions is met:
+           - The number of cleaned dirt patches reaches 18.
+           - The agent has moved 500 times.
+
+           Otherwise, it updates the environment and schedules the next step after 500 milliseconds.
+           """
     if env.max_dirt == 0:
         env.save_max_dirt()  # Save max dirt only once at the start
     if env.dirt_cleaned >= env.max_dirt or env.move_count >= 500:
         print("Auto Run Stopped")
         return  # Stop execution
     env.update_env()  # Perform one step
-    root.after(500, auto_run)  # Repeat every 500 milliseconds
+    root.after(300, auto_run)  # Repeat after 200 milliseconds (adjust the delay if needed)
 
 
 if __name__ == "__main__":
