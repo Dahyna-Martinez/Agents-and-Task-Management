@@ -2,10 +2,7 @@ from search import breadth_first_tree_search, MissionariesCannibals  # BFS
 import tkinter as tk
 from tkinter import ttk, messagebox
 # Create an instance of the problem
-problem = MissionariesCannibals()
 
-# Solve using BFS
-solution_node = breadth_first_tree_search(problem)
 class MissionariesCannibalsGUI:
     def __init__(self, root, solution):
         self.root = root
@@ -83,12 +80,12 @@ class MissionariesCannibalsGUI:
 
 # Example solution path (Replace with actual computed solution)
 if __name__ == "__main__":
-    from search import breadth_first_tree_search, MissionariesCannibals
+    from search import breadth_first_tree_search, MissionariesCannibals, depth_first_tree_search, depth_limited_search
 
     # Solve the problem
     problem = MissionariesCannibals()
     solution_node = breadth_first_tree_search(problem)
-
+    #solution_node=depth_limited_search(problem)
     # Extract solution path
     solution_path = [node.state for node in solution_node.path()]
 

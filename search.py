@@ -349,7 +349,7 @@ def uniform_cost_search(problem, display=False):
     return best_first_graph_search(problem, lambda node: node.path_cost, display)
 
 
-def depth_limited_search(problem, limit=50):
+def depth_limited_search(problem, limit=15):
     """[Figure 3.17]"""
 
     def recursive_dls(node, problem, limit):

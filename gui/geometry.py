@@ -37,7 +37,7 @@ class Node:
 
 
 class SearchGrid(tk.Tk):
-    def __init__(self, grid_size=10):
+    def __init__(self, grid_size=20):
         super().__init__()
         self.title("Grid Pathfinding")
         self.grid_size = grid_size
@@ -46,6 +46,7 @@ class SearchGrid(tk.Tk):
         self.goal = None
         self.create_grid()
         self.create_control_buttons()
+        self.switched = False
 
     def create_grid(self):
         """Creates the grid of buttons."""
@@ -54,7 +55,7 @@ class SearchGrid(tk.Tk):
             self.grid_rowconfigure(i, weight=1)  # Allow row to expand
             for j in range(self.grid_size):
                 self.grid_columnconfigure(j, weight=1)  # Allow column to expand
-                btn = ttk.Button(self, text='', command=lambda x=i, y=j: self.toggle_cell(x, y))
+                btn = ttk.Button(self, text=f"({i}, {j})", command=lambda x=i, y=j: self.toggle_cell(x, y))
                 btn.grid(row=i, column=j, sticky="nsew")  # Fill the whole cell
                 row.append(btn)
             self.grid_cells.append(row)
@@ -69,19 +70,29 @@ class SearchGrid(tk.Tk):
         ttk.Button(control_frame, text="Set Goal", command=self.set_goal).pack(side=tk.LEFT, padx=5)
         ttk.Button(control_frame, text="Find Path", command=self.find_path).pack(side=tk.LEFT, padx=5)
         ttk.Button(control_frame, text="Reset", command=self.reset).pack(side=tk.LEFT, padx=5)
+        ttk.Button(control_frame, text="Coodinates On/Off", command=self.show_coordinates).pack(side=tk.LEFT, padx=5)
 
     def toggle_cell(self, x, y):
         """Toggle the state of the grid cell."""
         current_text = self.grid_cells[x][y].cget("text")
-        if current_text == '':
-            self.grid_cells[x][y].config(text='Wall')  # Mark as obstacle
+
+        if current_text == f"({x}, {y})":
+            self.grid_cells[x][y].config(text='Wall')
+
+        elif current_text == '':
+            self.grid_cells[x][y].config(text='Wall')
+
         else:
-            self.grid_cells[x][y].config(text='')  # Clear obstacle
+            if not self.switched:
+                self.grid_cells[x][y].config(text=f"({x}, {y})")
+            else:
+                self.grid_cells[x][y].config(text='')
 
     def set_start(self):
         """Set the start cell."""
         if self.start:
-            self.grid_cells[self.start[0]][self.start[1]].config(text='')  # Clear previous start
+            x, y = self.start
+            self.grid_cells[self.start[0]][self.start[1]].config(text=f"({x}, {y})")  # Clear previous start
         self.start = self.get_cell()
         if self.start:
             x, y = self.start
@@ -90,7 +101,8 @@ class SearchGrid(tk.Tk):
     def set_goal(self):
         """Set the goal cell."""
         if self.goal:
-            self.grid_cells[self.goal[0]][self.goal[1]].config(text='')  # Clear previous goal
+            x, y = self.goal
+            self.grid_cells[self.goal[0]][self.goal[1]].config(text=f"({x}, {y})")  # Clear previous goal
         self.goal = self.get_cell()
         if self.goal:
             x, y = self.goal
@@ -118,7 +130,7 @@ class SearchGrid(tk.Tk):
 
     def straight_line_distance(self, A, B):
         "Straight-line distance between two points."
-        return sum(abs(a - b) * 2 for (a, b) in zip(A, B)) * 0.5
+        return sum(abs(a - b) ** 2 for (a, b) in zip(A, B)) ** 0.5
 
     def heuristic(self, node):
         "Straight-line distance between state and the goal."
@@ -221,13 +233,31 @@ class SearchGrid(tk.Tk):
         """Resets the grid, start, and goal positions."""
         for x in range(self.grid_size):
             for y in range(self.grid_size):
-                self.grid_cells[x][y].config(text='')  # Clear all cell labels
+                self.grid_cells[x][y].config(text=f"({x}, {y})")  # Clear all cell labels
 
         self.start = None
         self.goal = None
 
+    def show_coordinates(self):
+        if self.switched == False:
+            for x in range(self.grid_size):
+                for y in range(self.grid_size):
+                    if (x, y) != self.start and (x, y) != self.goal and self.grid_cells[x][y].cget("text") != 'Wall':
+                        self.grid_cells[x][y].config(text='')
+            self.switched = True
+        else:
+            for x in range(self.grid_size):
+                for y in range(self.grid_size):
+                    if (x, y) != self.start and (x, y) != self.goal and self.grid_cells[x][y].cget("text") != 'Wall':
+                        self.grid_cells[x][y].config(text=f"({x}, {y})")
+            self.switched = False
+
     def reconstruct_path(self, current, algorithm):
         """Reconstructs the path to the goal."""
+        for x in range(self.grid_size):
+            for y in range(self.grid_size):
+                if (x, y) != self.start and (x, y) != self.goal and self.grid_cells[x][y].cget("text") != 'Wall':
+                    self.grid_cells[x][y].config(text='')
         path = []
         while current is not None:
             x, y = current.state
