@@ -1,7 +1,6 @@
-from search import breadth_first_tree_search, MissionariesCannibals  # BFS
 import tkinter as tk
 from tkinter import ttk, messagebox
-# Create an instance of the problem
+
 
 class MissionariesCannibalsGUI:
     def __init__(self, root, solution):
@@ -63,10 +62,13 @@ class MissionariesCannibalsGUI:
             self.history.append(f"Step {self.step}: {m_left}M, {c_left}C | {boat_position} | {m_right}M, {c_right}C")
 
             # Update history text box
-            self.history_text.config(state=tk.NORMAL)  # Enable editing
-            self.history_text.insert(tk.END, self.history[-1] + "\n")  # Add new step
-            self.history_text.config(state=tk.DISABLED)  # Disable editing again
-            self.history_text.yview_moveto(1.0)  # Auto-scroll to the bottom
+            self.history_text.config(state=tk.NORMAL)
+            # Add new step
+            self.history_text.insert(tk.END, self.history[-1] + "\n")
+            # Disable editing again
+            self.history_text.config(state=tk.DISABLED)
+            # Auto-scroll to the bottom
+            self.history_text.yview_moveto(1.0)
 
     def next_step(self):
         """Move to the next step in the solution."""
@@ -78,7 +80,7 @@ class MissionariesCannibalsGUI:
             messagebox.showinfo("Finished", "Solution Completed!")
 
 
-# Example solution path (Replace with actual computed solution)
+
 if __name__ == "__main__":
     from search import breadth_first_tree_search, MissionariesCannibals, depth_first_tree_search, depth_limited_search
 

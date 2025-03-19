@@ -31,7 +31,7 @@ class Node:
             new_state = (x + dx, y + dy)
             if 0 <= new_state[0] < app.grid_size and 0 <= new_state[1] < app.grid_size:
                 # Check if the new state is not a wall and is not already explored
-                if app.grid_cells[new_state[0]][new_state[1]].cget("text") != 'Wall':  # Not an obstacle
+                if app.grid_cells[new_state[0]][new_state[1]].cget("text") != 'Wall':
                     neighbors.append(Node(new_state, self))
         return neighbors
 
@@ -92,21 +92,25 @@ class SearchGrid(tk.Tk):
         """Set the start cell."""
         if self.start:
             x, y = self.start
-            self.grid_cells[self.start[0]][self.start[1]].config(text=f"({x}, {y})")  # Clear previous start
+            # Clear previous start
+            self.grid_cells[self.start[0]][self.start[1]].config(text=f"({x}, {y})")
         self.start = self.get_cell()
         if self.start:
             x, y = self.start
-            self.grid_cells[x][y].config(text='Start')  # Mark as start
+            # Mark as start
+            self.grid_cells[x][y].config(text='Start')
 
     def set_goal(self):
         """Set the goal cell."""
         if self.goal:
             x, y = self.goal
-            self.grid_cells[self.goal[0]][self.goal[1]].config(text=f"({x}, {y})")  # Clear previous goal
+            # Clear previous goal
+            self.grid_cells[self.goal[0]][self.goal[1]].config(text=f"({x}, {y})")
         self.goal = self.get_cell()
         if self.goal:
             x, y = self.goal
-            self.grid_cells[x][y].config(text='Goal')  # Mark as goal
+            # Mark as goal
+            self.grid_cells[x][y].config(text='Goal')
 
     def get_cell(self):
         """Simple prompt to select a cell."""

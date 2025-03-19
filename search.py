@@ -71,23 +71,25 @@ class MissionariesCannibals(Problem):
 
     def __init__(self):
         """Define the initial state and goal state."""
-        initial_state = (3, 3, 1, 0, 0)  # (m_left, c_left, boat, m_right, c_right)
-        goal_state = (0, 0, 0, 3, 3)  # All moved to the right side
+        # (m_left, c_left, boat, m_right, c_right)
+        initial_state = (3, 3, 1, 0, 0)
+        goal_state = (0, 0, 0, 3, 3)
         super().__init__(initial_state, goal_state)
 
     def actions(self, state):
         """Return valid actions (boat moves) for the given state."""
         m_left, c_left, boat, m_right, c_right = state
-        moves = [(1, 0), (2, 0), (0, 1), (0, 2), (1, 1)]  # Possible moves m and c
+        moves = [(1, 0), (2, 0), (0, 1), (0, 2), (1, 1)]
         valid_moves = []
 
         for m, c in moves:
-            if boat == 1:  # Boat on the left side
+            # Boat on the left side
+            if boat == 1:
                 new_state = (m_left - m, c_left - c, 0, m_right + m, c_right + c)
-            else:  # Boat on the right side
+            else:
                 new_state = (m_left + m, c_left + c, 1, m_right - m, c_right - c)
 
-            if self.is_valid_state(new_state):  # Check if the state is valid
+            if self.is_valid_state(new_state):
                 valid_moves.append((m, c))
 
         return valid_moves
