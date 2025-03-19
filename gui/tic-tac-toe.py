@@ -1,6 +1,6 @@
 import os.path
 from tkinter import *
-
+import sys
 from games import minmax_decision, alpha_beta_player, random_player, TicTacToe
 # "gen_state" can be used to generate a game state to apply the algorithm
 from tests.test_games import gen_state

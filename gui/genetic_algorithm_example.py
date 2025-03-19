@@ -11,7 +11,7 @@
 import os.path
 from tkinter import *
 from tkinter import ttk
-
+import sys
 import search
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))

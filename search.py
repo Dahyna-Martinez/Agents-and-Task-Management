@@ -64,7 +64,64 @@ class Problem:
 
 # ______________________________________________________________________________
 
+class MissionariesCannibals(Problem):
+    """Missionaries and Cannibals problem definition.
+    It provides the definition of the problem statement for
+    the Missionaries problem with initial statements for the different algorithms."""
 
+    def __init__(self):
+        """Define the initial state and goal state."""
+        initial_state = (3, 3, 1, 0, 0)  # (m_left, c_left, boat, m_right, c_right)
+        goal_state = (0, 0, 0, 3, 3)  # All moved to the right side
+        super().__init__(initial_state, goal_state)
+
+    def actions(self, state):
+        """Return valid actions (boat moves) for the given state."""
+        m_left, c_left, boat, m_right, c_right = state
+        moves = [(1, 0), (2, 0), (0, 1), (0, 2), (1, 1)]  # Possible moves m and c
+        valid_moves = []
+
+        for m, c in moves:
+            if boat == 1:  # Boat on the left side
+                new_state = (m_left - m, c_left - c, 0, m_right + m, c_right + c)
+            else:  # Boat on the right side
+                new_state = (m_left + m, c_left + c, 1, m_right - m, c_right - c)
+
+            if self.is_valid_state(new_state):  # Check if the state is valid
+                valid_moves.append((m, c))
+
+        return valid_moves
+
+    def result(self, state, action):
+        """Return the new state after taking action."""
+        m, c = action
+        m_left, c_left, boat, m_right, c_right = state
+
+        if boat == 1:  # Boat moves from left to right
+            return (m_left - m, c_left - c, 0, m_right + m, c_right + c)
+        else:  # Boat moves from right to left
+            return (m_left + m, c_left + c, 1, m_right - m, c_right - c)
+
+    def goal_test(self, state):
+        """Check if the goal state is reached."""
+        return state == self.goal
+
+    def path_cost(self, c, state1, action, state2):
+        """Cost of moving (each step costs 1)."""
+        return c + 1
+
+    def is_valid_state(self, state):
+        """Check if the state is valid (no missionaries eaten)."""
+        m_left, c_left, _, m_right, c_right = state
+        # Ensure all values are in range
+        if not (0 <= m_left <= 3 and 0 <= c_left <= 3 and 0 <= m_right <= 3 and 0 <= c_right <= 3):
+            return False
+        # Ensure missionaries are not outnumbered on either side
+        if (m_left > 0 and m_left < c_left) or (m_right > 0 and m_right < c_right):
+            return False
+        return True
+
+#---------------------------------------------------------------------------------------------
 class Node:
     """A node in a search tree. Contains a pointer to the parent (the node
     that this is a successor of) and to the actual state for this node. Note
