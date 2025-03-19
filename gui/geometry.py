@@ -12,7 +12,7 @@ class Node:
         self.parent = parent  # Reference to the parent Node
         self.g = 0  # Cost from start to this node
         self.h = 0  # Heuristic cost to goal
-        self.f = 0  # Total cost (g + h)
+        self.f = 0  # Total cost 
 
     def __eq__(self, other):
         return self.state == other.state
@@ -166,7 +166,7 @@ class SearchGrid(tk.Tk):
 
                 child.g = current_node.g + 1
                 child.h = self.heuristic(child)
-                child.f = child.g + child.h
+                child.f = child.g + child.h #f = (g+h)
 
                 # Only add if not already in frontier
                 already_in_frontier = False
