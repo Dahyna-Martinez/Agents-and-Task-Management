@@ -70,7 +70,7 @@ class SearchGrid(tk.Tk):
         ttk.Button(control_frame, text="Set Goal", command=self.set_goal).pack(side=tk.LEFT, padx=5)
         ttk.Button(control_frame, text="Find Path", command=self.find_path).pack(side=tk.LEFT, padx=5)
         ttk.Button(control_frame, text="Reset", command=self.reset).pack(side=tk.LEFT, padx=5)
-        ttk.Button(control_frame, text="Coodinates On/Off", command=self.show_coordinates).pack(side=tk.LEFT, padx=5)
+        ttk.Button(control_frame, text="Coordinates On/Off", command=self.show_coordinates).pack(side=tk.LEFT, padx=5)
 
     def toggle_cell(self, x, y):
         """Toggle the state of the grid cell."""
