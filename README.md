@@ -16,21 +16,28 @@ To run exercise 3.9.
 
 - 1.Select MissionariesCannibals.py, code may ask you to download packages.
 - 2.If download packages fails, Run the program anyways.
-3- .Once program ran a pop up will appear with initial state.
-4.Select next to show the next state choosen by the algorithm for the soltion.
-5.Once finished a different pop up will appear informing that goal has been reached.
+- 3.Once program ran a pop up will appear with initial state.
+- 4.Select next to show the next state choosen by the algorithm for the soltion.
+- 5.Once finished a different pop up will appear informing that goal has been reached.
 
 Programing assigment 2
 Go to GUI folder in the project
 To run exercise 2.11:
+
 1.Select vacuum_agent.py, code may ask you to download packages.
+
 2.If download packages fails, Run the program anyways.
+
 3.In the GUI select which location is dirty and press next to activate the agent.
 
 To run exercise 2.14 no memeory state:
+
 1.Select xy_vacuum_environment_no_state.py code may ask you to download packages.
+
 2.If download packages fails, Run the program anyways.
+
 3.In the GUI select which location is dirty and which locations have walls.
+
 4.Press next to activate the agent, unless you wish to automate the code press the auto button.
 
 
