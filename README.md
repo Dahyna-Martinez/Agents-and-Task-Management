@@ -1,6 +1,14 @@
 # Agents-and-Task-Management
 Go to gui folder.
 
+To run exercise 3.7:
+1.Select geometry.py, code may ask you to download packages.
+2.If download packages fails, Run the program anyways.
+3.You can toggle coordinate visibility in the cells by pressing the "Coordinates On/Off" button.
+4.In the GUI, create polygonal obstacle shapes by clicking on the desired cells.
+5.Select the starting cell and the goal cell.
+6.Press the "Find Path" button and select the algorithm you want to use.
+
 To run exercise 2.11:
 1.Select vacuum_agent.py, code may ask you to download packages.
 2.If download packages fails, Run the program anyways.
