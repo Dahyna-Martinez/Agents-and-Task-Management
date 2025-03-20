@@ -12,10 +12,11 @@ To run exercise 3.7:
 - 5.Select the starting cell and the goal cell.
 - 6.Press the "Find Path" button and select the algorithm you want to use.
 
-To run exercise 3.9
-1.Select MissionariesCannibals.py, code may ask you to download packages.
-2.If download packages fails, Run the program anyways.
-3.Once program ran a pop up will appear with initial state.
+To run exercise 3.9.
+
+- 1.Select MissionariesCannibals.py, code may ask you to download packages.
+- 2.If download packages fails, Run the program anyways.
+3- .Once program ran a pop up will appear with initial state.
 4.Select next to show the next state choosen by the algorithm for the soltion.
 5.Once finished a different pop up will appear informing that goal has been reached.
 
