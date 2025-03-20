@@ -1,8 +1,10 @@
 # Programing assigments Repository
 
-Programing assigment 3
-- Go to GUI folder.
-- To run exercise 3.7:
+Programing assigment 3.
+
+Go to GUI folder.
+
+To run exercise 3.7:
 - 1.Select geometry.py, code may ask you to download packages.
 - 2.If download packages fails, Run the program anyways.
 - 3.You can toggle coordinate visibility in the cells by pressing the "Coordinates On/Off" button.
