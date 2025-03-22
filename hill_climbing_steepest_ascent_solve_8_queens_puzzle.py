@@ -28,7 +28,7 @@ class CustomNQueensProblem(Problem):
             N (int): The number of queens and the size of the board.
         """
         self.N = N
-        initial_state = tuple(random.randint(0, N - 1) for _ in range(N))  # Randomly place queens in each column
+        initial_state = tuple(random.randint(0, N - 1) for _ in range(N))
         super().__init__(initial_state)
 
     def actions(self, state):
@@ -46,7 +46,7 @@ class CustomNQueensProblem(Problem):
         actions = []
         for col in range(self.N):
             for row in range(self.N):
-                if state[col] != row:  # Ensure we are making a change
+                if state[col] != row:
                     actions.append((col, row))
         return actions
 
@@ -81,7 +81,6 @@ class CustomNQueensProblem(Problem):
         for i in range(self.N):
             for j in range(i + 1, self.N):
                 if state[i] != state[j] and abs(state[i] - state[j]) != abs(i - j):
-                    # Check if queens are not on the same row or diagonal
                     non_attacking_pairs += 1
         return non_attacking_pairs
 
@@ -96,42 +95,40 @@ def plot_nqueens(state, title=""):
         title (str, optional): The title for the plot.
     """
     N = len(state)
-    board = np.zeros((N, N))  # Create an N×N empty board
-
-    # Place queens on the board
+    board = np.zeros((N, N))
     for col, row in enumerate(state):
         board[row, col] = 1
 
-    # Plot the board
     plt.imshow(board, cmap='Greens', interpolation='nearest')
-
-    # Label queens on the board
     for col in range(N):
         row = state[col]
         plt.text(col, row, 'Q', ha='center', va='center', fontsize=20, color='White')
 
-    # Add grid lines for better visualization
     plt.grid(which='both', color='black', linestyle='--', linewidth=2)
-
     plt.title(title)
-    plt.axis('off')  # Hide axes
-    plt.show(block=True)  # Ensure it opens as a pop-up window
+    plt.axis('off')
+    plt.show(block=True)
 
 
 # Solve multiple N-Queens instances using Steepest-Ascent Hill Climbing
-num_instances = 10  # Number of problem instances to solve
+num_instances = 10
 solutions = []
 
 for _ in range(num_instances):
-    problem = CustomNQueensProblem(8)  # Create an 8-Queens problem instance
-    solution, search_cost, execution_time = steepest_ascent_hill_climbing(problem)  # Solve using hill climbing
-    solutions.append((solution, search_cost, execution_time))
+    problem = CustomNQueensProblem(8)
+    initial_state = problem.initial
+    solution, search_cost, execution_time = steepest_ascent_hill_climbing(problem)
+    solutions.append((initial_state, solution, search_cost, execution_time))
 
-# Print and plot each solution
-for i, (sol, cost, time) in enumerate(solutions):
+# Print and plot each solution along with the initial problem
+for i, (init_state, sol, cost, time) in enumerate(solutions):
+    print(f"Initial State {i + 1}: {init_state}")
     print(f"Solution {i + 1}: {sol}")
     print(f"Search Cost for Solution {i + 1}: {cost}")
     print(f"Execution Time for Solution {i + 1}: {time:.4f} seconds")
+
+    print(f"Displaying Initial State {i + 1}:")
+    plot_nqueens(init_state, title=f"Initial State {i + 1} - N-Queens")
 
     print(f"Displaying Solution {i + 1}:")
     plot_nqueens(sol, title=f"Solution {i + 1} - N-Queens")
