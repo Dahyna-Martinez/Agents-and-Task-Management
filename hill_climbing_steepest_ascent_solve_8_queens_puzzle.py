@@ -124,13 +124,14 @@ solutions = []
 
 for _ in range(num_instances):
     problem = CustomNQueensProblem(8)  # Create an 8-Queens problem instance
-    solution = steepest_ascent_hill_climbing(problem)  # Solve using hill climbing
-    solutions.append(solution)
+    solution, search_cost, execution_time = steepest_ascent_hill_climbing(problem)  # Solve using hill climbing
+    solutions.append((solution, search_cost, execution_time))
 
 # Print and plot each solution
-for i, sol in enumerate(solutions):
+for i, (sol, cost, time) in enumerate(solutions):
     print(f"Solution {i + 1}: {sol}")
+    print(f"Search Cost for Solution {i + 1}: {cost}")
+    print(f"Execution Time for Solution {i + 1}: {time:.4f} seconds")
 
-    # Display the solution
     print(f"Displaying Solution {i + 1}:")
     plot_nqueens(sol, title=f"Solution {i + 1} - N-Queens")

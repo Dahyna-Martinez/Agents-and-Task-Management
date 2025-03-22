@@ -27,7 +27,7 @@ def plot_puzzle(state, title=""):
 
     plt.title(title)
     plt.axis('off')
-    # Ensure each plot appears in a separate pop-up window. Kinda does what I want it to?
+    # Ensure each plot appears in a separate pop-up window
     plt.show(block=True)
 
 
@@ -43,12 +43,14 @@ for _ in range(num_instances):
     # Create an 8-Puzzle problem instance
     problem = EightPuzzleProblem(initial_state)
     # Solve using hill climbing
-    solution = steepest_ascent_hill_climbing(problem)
-    solutions.append((initial_state, solution))
+    solution, search_cost, execution_time = steepest_ascent_hill_climbing(problem)
+    solutions.append((initial_state, solution, search_cost, execution_time))
 
 # Print and plot each puzzle instance
-for i, (init, sol) in enumerate(solutions):
+for i, (init, sol, cost, time) in enumerate(solutions):
     print(f"Puzzle {i + 1}: Initial {init} -> Solved {sol}")
+    print(f"Search Cost for Puzzle {i + 1}: {cost}")
+    print(f"Execution Time for Puzzle {i + 1}: {time:.4f} seconds")
 
     # Display the initial puzzle state
     print(f"Displaying Puzzle {i + 1} - Initial State:")
