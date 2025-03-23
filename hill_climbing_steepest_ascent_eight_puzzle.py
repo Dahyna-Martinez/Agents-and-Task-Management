@@ -88,8 +88,8 @@ class EightPuzzleProblem(Problem):
             int: The negative count of misplaced tiles (-1 per misplaced tile),
                  so that the algorithm maximizes the score.
         """
-        goal = (1, 2, 3, 4, 5, 6, 7, 8, 0)  # Goal state
-        return -sum(s != g for s, g in zip(state, goal))  # Negative for maximization
+        goal = (1, 2, 3, 4, 5, 6, 7, 8, 0)
+        return -sum(s != g for s, g in zip(state, goal))
 
 
 def generate_random_puzzle():
