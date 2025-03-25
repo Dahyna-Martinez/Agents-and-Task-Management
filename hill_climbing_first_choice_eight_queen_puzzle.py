@@ -108,24 +108,34 @@ def plot_nqueens(state, title=""):
     plt.show(block=True)
 
 
-def count_attacking_pairs(state):
+def calculate_min_moves_to_solution(state):
     """
-       Computes the heuristic cost as the number of attacking queen pairs.
-       """
-    attacking_pairs = 0
+    Estimates the minimum number of moves needed to transform an initial state
+    into a valid solution.
+
+    Parameters:
+        state (tuple): The initial state of the board.
+
+    Returns:
+        int: The minimum number of queen moves required.
+    """
     N = len(state)
-    for i in range(N):
-        for j in range(i + 1, N):
-            if state[i] == state[j] or abs(state[i] - state[j]) == abs(i - j):
-                attacking_pairs += 1
-    return attacking_pairs
+    # Counts the quantity of queens in each row
+    row_conflicts = [0] * N
+    for row in state:
+        row_conflicts[row] += 1
+
+    # The minimum number of moves is at least the number of excess queens in conflicting rows
+    excess_queens = sum(c - 1 for c in row_conflicts if c > 1)
+
+    return excess_queens
 
 
-# Solve multiple N-Queens instances using First Choice Hill Climbing
+# Solves multiple N-Queens instances using First Choice Hill Climbing
 num_instances = 10
 solutions = []
 search_costs = []
-optimal_solution_costs = []  # List to store the optimal solution costs
+optimal_solution_costs = []
 solved_count = 0
 
 for _ in range(num_instances):
@@ -137,13 +147,13 @@ for _ in range(num_instances):
     solution = solution_node.state if hasattr(solution_node, 'state') else solution_node
 
     # Compute the optimal solution cost (attacking pairs) for the initial state.
-    optimal_solution_cost = count_attacking_pairs(initial_state)
+    optimal_solution_cost = calculate_min_moves_to_solution(initial_state)
 
     # Track data for analysis
     search_costs.append(search_cost)
     optimal_solution_costs.append(optimal_solution_cost)
 
-    if count_attacking_pairs(solution) == 0:
+    if problem.value(solution) == 0:
         # Solution must have 0 attacking pairs.
         solved_count += 1
 
@@ -157,7 +167,7 @@ for i, (init_state, sol, cost) in enumerate(solutions):
     print(f"Initial State {i + 1}: {init_state}")
     print(f"Solution {i + 1}: {sol}")
     print(f"Search Cost for Solution {i + 1}: {cost}")
-    print(f"Optimal Solution Cost (Attacking Pairs) for Puzzle {i + 1}: {optimal_solution_costs[i]}")  # Print the optimal cost
+    print(f"Optimal Solution Cost for Puzzle {i + 1}: {optimal_solution_costs[i]}")
 
     plot_nqueens(init_state, title=f"Initial State {i + 1} - N-Queens")
     plot_nqueens(sol, title=f"Solution {i + 1} - N-Queens")

@@ -123,13 +123,29 @@ if len(optimal_costs) == len(search_costs) == len(solved_percentage):
 
     # Use the overall solved percentage for plotting
     ax.scatter(optimal_costs, search_costs, color='blue', label='Search Cost')
-    ax.scatter(optimal_costs, [solved_percentage_total] * len(optimal_costs), color='red', label='Solved Percentage')
+    ax.scatter(optimal_costs, optimal_costs, color='red', label='Manhattan Distance')
 
     ax.set_xlabel("Optimal Solution Cost (Manhattan Distance)")
-    ax.set_ylabel("Search Cost / Solved Percentage")
-    ax.set_title("Search Cost and Solved Percentage vs Optimal Solution Cost")
+    ax.set_ylabel("Search Cost")
+    ax.set_title("Search Cost vs Optimal Solution Cost")
     ax.legend()
+    ax.grid(True)
+    plt.show()
 
+    # Create a figure and axis
+    fig, ay = plt.subplots(figsize=(6, 4))
+
+    # Plot bar chart for solved vs unsolved problems
+    ay.bar(["Solved", "Unsolved"], [solved_percentage_total, 100 - solved_percentage_total], color=['green', 'red'],  label=["Solved", "Unsolved"])
+
+    # Labels and title
+    ay.set_ylabel("Percentage (%)")
+    ay.set_title("Percentage of Solved Problems")
+    ay.set_ylim(0, 100)
+
+    # Show plot
+    ay.legend()
+    ay.grid(True)
     plt.show()
 else:
     print("Warning: List size mismatch! Scatter plot skipped.")
