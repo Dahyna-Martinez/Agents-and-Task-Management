@@ -1,6 +1,18 @@
-# Programing assigments Repository
+# Programming assigments Repository
+## Programming assignment 4.
+To run First Choice Hill Climbing EightPuzzle exercise:
+- 1.Go to hill_climbing_first_choice_eight_puzzle_test.py, code may ask you to download packages.
+- 2.Run program in current file.
+- 3.Program will generate grids for each problem and its attempted solution, and a comparison plot.
+- 4.The terminal will posses extra infromation of each puzzle problem, path cost, heuristic cost, etc.
 
-## Programing assigment 3.
+To run First Choice Hill Climbing Eight Queen exercise:
+- 1.Go to hill_climbing_first_choice_eight_queen_puzzle.py, code may ask you to download packages.
+- 2.Run program in current file.
+- 3.Program will generate grids for each problem and its attempted solution, and comparison plots.
+- 4.The terminal will posses extra infromation of each puzzle problem, path cost, heuristic cost, etc.
+
+## Programming assigment 3.
 
 Go to GUI folder.
 
@@ -20,7 +32,7 @@ To run exercise 3.9.
 - 4.Select next to show the next state choosen by the algorithm for the soltion.
 - 5.Once finished a different pop up will appear informing that goal has been reached.
 
-## Programing assigment 2
+## Programming assigment 2
 
 Go to GUI folder in the project.
 
