@@ -41,3 +41,4 @@ def steepest_ascent_hill_climbing(problem):
     execution_time = end_time - start_time
 
     return current.state, search_cost, execution_time
+

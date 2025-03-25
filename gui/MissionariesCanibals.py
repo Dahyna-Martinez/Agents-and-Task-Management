@@ -90,7 +90,6 @@ if __name__ == "__main__":
     #solution_node=depth_limited_search(problem)
     # Extract solution path
     solution_path = [node.state for node in solution_node.path()]
-
     root = tk.Tk()
     app = MissionariesCannibalsGUI(root, solution_path)
     root.mainloop()
