@@ -1,16 +1,29 @@
 # Programming assigments Repository
 ## Programming assignment 4.
+
+To run Steepest Ascent Hill Climbing Eight Puzzle exercise:
+- 1.Go to hill_climbing_steepest_ascent_solve_8_puzzle.py , code may ask you to download packages.
+- 2.Run program in current file.
+- 3.Program will generate grids for each problem and its attempted solution, and a comparison plot.
+- 4.The terminal will posses extra information of each puzzle problem, path cost, heuristic cost etc.
+
+To run Steepest Ascent Hill Climbing Eight Queen exercise:
+- 1.Go to hill_climbing_steepest_ascent_solve_8_queens_puzzle.py , code may ask you to download packages.
+- 2.Run program in current file.
+- 3.Program will generate grids for each problem and its attempted solution, and a comparison plot.
+- 4.The terminal will posses extra information of each puzzle problem, path cost, heuristic cost etc.
+
 To run First Choice Hill Climbing EightPuzzle exercise:
 - 1.Go to hill_climbing_first_choice_eight_puzzle_test.py, code may ask you to download packages.
 - 2.Run program in current file.
 - 3.Program will generate grids for each problem and its attempted solution, and a comparison plot.
-- 4.The terminal will posses extra infromation of each puzzle problem, path cost, heuristic cost, etc.
+- 4.The terminal will posses extra information of each puzzle problem, path cost, heuristic cost, etc.
 
 To run First Choice Hill Climbing Eight Queen exercise:
 - 1.Go to hill_climbing_first_choice_eight_queen_puzzle.py, code may ask you to download packages.
 - 2.Run program in current file.
 - 3.Program will generate grids for each problem and its attempted solution, and comparison plots.
-- 4.The terminal will posses extra infromation of each puzzle problem, path cost, heuristic cost, etc.
+- 4.The terminal will posses extra information of each puzzle problem, path cost, heuristic cost, etc.
 
 ## Programming assigment 3.
 
