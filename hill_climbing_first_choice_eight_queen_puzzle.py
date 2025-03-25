@@ -177,7 +177,7 @@ print(f"Overall Success Rate: {success_rate:.2f}%")
 # Create performance analysis plots.
 fig, axs = plt.subplots(1, 2, figsize=(12, 5))
 
-# Plot 1: Search Cost vs. Attacking Pairs Costs
+# Plot 1: Search Cost vs. Optimal Solution Costs
 axs[0].scatter(optimal_solution_costs, search_costs, color='green', alpha=0.7, label="Search Cost")
 axs[0].set_xlabel("Optimal Solution Cost")
 axs[0].set_ylabel("Search Cost (Steps Taken)")
