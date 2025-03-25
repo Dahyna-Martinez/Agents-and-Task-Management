@@ -7,41 +7,40 @@ import random
 
 class CustomNQueensProblem(Problem):
     """
-           Modified N-Queens problem for use with hill climbing.
-           The goal is to place N queens on an N×N chessboard such that no two queens attack each other.
+    Modified N-Queens problem for use with hill climbing.
+    The goal is to place N queens on an N×N chessboard such that no two queens attack each other.
 
-           Attributes:
-               N (int): The number of queens (and board size).
-               initial (tuple): The initial state representing queen positions in each column.
+    Attributes:
+        N (int): The number of queens (and board size).
+        initial (tuple): The initial state representing queen positions in each column.
 
-           Methods:
-               actions(state): Returns all possible moves by changing a queen's row in any column.
-               result(state, action): Returns a new state with the given move applied.
-               value(state): Computes the heuristic value based on the number of attacking queen pairs.
-           """
+    Methods:
+        actions(state): Returns all possible moves by changing a queen's row in any column.
+        result(state, action): Returns a new state with the given move applied.
+        value(state): Computes the heuristic value based on the number of attacking queen pairs.
+    """
+
     def __init__(self, N):
         """
-            Initializes an N-Queens problem with a randomly generated initial state.
+        Initializes an N-Queens problem with a randomly generated initial state.
 
-            Parameters:
-                   N (int): The number of queens and the size of the board.
-               """
+        Parameters:
+            N (int): The number of queens and the size of the board.
+        """
         self.N = N
         initial_state = tuple(random.randint(0, N - 1) for _ in range(N))
         super().__init__(initial_state)
 
     def actions(self, state):
         """
-             Generates all possible moves by changing a queen's row in any column.
+        Generates all possible moves by changing a queen's row in any column.
 
-                Parameters:
-                     state (tuple): The current board state, where each index represents a column and
-                                         the value represents the row where the queen is placed.
+        Parameters:
+            state (tuple): The current board state.
 
-                Returns:
-                     list: A list of possible moves as tuples (col, row), where 'col' is the column index
-                                and 'row' is the new row position.
-                      """
+        Returns:
+            list: A list of possible moves as tuples (col, row).
+        """
         actions = []
         for col in range(self.N):
             for row in range(self.N):
@@ -51,14 +50,14 @@ class CustomNQueensProblem(Problem):
 
     def result(self, state, action):
         """
-            Generates a new state by moving a queen to a different row in a specific column.
+        Generates a new state by moving a queen to a different row in a specific column.
 
-             Parameters:
-                     state (tuple): The current board state.
-                    action (tuple): A tuple (col, row) specifying which queen to move and where.
+        Parameters:
+            state (tuple): The current board state.
+            action (tuple): A tuple (col, row) specifying which queen to move and where.
 
-            Returns:
-                tuple: The new board state after applying the move.
+        Returns:
+            tuple: The new board state after applying the move.
         """
         col, row = action
         new_state = list(state)
@@ -67,14 +66,14 @@ class CustomNQueensProblem(Problem):
 
     def value(self, state):
         """
-             Computes the heuristic value of a state based on the number of attacking queen pairs.
+        Computes the heuristic value of a state based on the number of attacking queen pairs.
 
-                 Parameters:
-                     state (tuple): The current board state.
+        Parameters:
+            state (tuple): The current board state.
 
-                 Returns:
-                     int: The number of attacking queen pairs.
-            """
+        Returns:
+            int: The number of attacking queen pairs.
+        """
         attacking_pairs = 0
         for i in range(self.N):
             for j in range(i + 1, self.N):
@@ -85,13 +84,12 @@ class CustomNQueensProblem(Problem):
 
 def plot_nqueens(state, title=""):
     """
-     Visualizes an N-Queens solution on a chessboard.
+    Visualizes an N-Queens solution on a chessboard.
 
-        Parameters:
-             state (tuple): The board state, where each index represents a column and
-                             the value represents the row where the queen is placed.
-             title (str, optional): The title for the plot.
-          """
+    Parameters:
+        state (tuple): The board state.
+        title (str, optional): The title for the plot.
+    """
     N = len(state)
     board = np.zeros((N, N))
     for col, row in enumerate(state):
@@ -105,13 +103,13 @@ def plot_nqueens(state, title=""):
     plt.grid(which='both', color='black', linestyle='--', linewidth=2)
     plt.title(title)
     plt.axis('off')
+    plt.grid(True)
     plt.show(block=True)
 
 
 def calculate_min_moves_to_solution(state):
     """
-    Estimates the minimum number of moves needed to transform an initial state
-    into a valid solution.
+    Estimates the minimum number of moves needed to transform an initial state into a valid solution.
 
     Parameters:
         state (tuple): The initial state of the board.
@@ -120,28 +118,28 @@ def calculate_min_moves_to_solution(state):
         int: The minimum number of queen moves required.
     """
     N = len(state)
-    # Counts the quantity of queens in each row
+    #Count how many queens are in each row.
     row_conflicts = [0] * N
     for row in state:
         row_conflicts[row] += 1
 
-    # The minimum number of moves is at least the number of excess queens in conflicting rows
+    # The minimum number of moves is at least the number of excess queens in conflicting rows.
     excess_queens = sum(c - 1 for c in row_conflicts if c > 1)
 
-    return excess_queens
+    return excess_queens  # A rough lower bound on moves needed to fix the state
 
 
-# Solves multiple N-Queens instances using First Choice Hill Climbing
+# Solve multiple N-Queens instances using First Choice Hill Climbing.
 num_instances = 10
 solutions = []
 search_costs = []
 optimal_solution_costs = []
 solved_count = 0
 
-for _ in range(num_instances):
+for i in range(num_instances):
     problem = CustomNQueensProblem(8)
     initial_state = problem.initial
-    solution_node, search_cost = hill_climbing_first_choice(problem)  # Use First Choice Hill Climbing
+    solution_node, search_cost = hill_climbing_first_choice(problem)
 
     # Extract the solution state if it's a Node object.
     solution = solution_node.state if hasattr(solution_node, 'state') else solution_node
@@ -149,28 +147,32 @@ for _ in range(num_instances):
     # Compute the optimal solution cost (attacking pairs) for the initial state.
     optimal_solution_cost = calculate_min_moves_to_solution(initial_state)
 
+    # Check if the solution is successful
+    solved = problem.value(solution) == 0
+    success_percentage = (1 if solved else 0) * 100  # 100% if solved, else 0%
+
     # Track data for analysis
     search_costs.append(search_cost)
     optimal_solution_costs.append(optimal_solution_cost)
 
-    if problem.value(solution) == 0:
-        # Solution must have 0 attacking pairs.
+    if solved:
         solved_count += 1
 
     solutions.append((initial_state, solution, search_cost))
 
-# Calculated success rate.
+    # Print success for each instance
+    print(f"Problem {i + 1}: {'Solved' if solved else 'Unsolved'} ({success_percentage}%)")
+    print(f"Initial State: {initial_state}")
+    print(f"Solution: {solution}")
+    print(f"Search Cost: {search_cost}")
+    print(f"Optimal Solution Cost: {optimal_solution_cost}\n")
+
+    plot_nqueens(initial_state, title=f"Initial State {i + 1} - N-Queens")
+    plot_nqueens(solution, title=f"Solution {i + 1} - N-Queens")
+
+# Calculate overall success rate
 success_rate = (solved_count / num_instances) * 100
-
-# Displays each solution’s initial and final state in pop-up windows.
-for i, (init_state, sol, cost) in enumerate(solutions):
-    print(f"Initial State {i + 1}: {init_state}")
-    print(f"Solution {i + 1}: {sol}")
-    print(f"Search Cost for Solution {i + 1}: {cost}")
-    print(f"Optimal Solution Cost for Puzzle {i + 1}: {optimal_solution_costs[i]}")
-
-    plot_nqueens(init_state, title=f"Initial State {i + 1} - N-Queens")
-    plot_nqueens(sol, title=f"Solution {i + 1} - N-Queens")
+print(f"Overall Success Rate: {success_rate:.2f}%")
 
 # Create performance analysis plots.
 fig, axs = plt.subplots(1, 2, figsize=(12, 5))

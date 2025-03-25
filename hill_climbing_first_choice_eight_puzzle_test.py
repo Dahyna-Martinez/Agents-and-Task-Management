@@ -143,7 +143,7 @@ if len(optimal_costs) == len(search_costs) == len(solved_percentage):
     ay.set_title("Percentage of Solved Problems")
     ay.set_ylim(0, 100)
 
-    # Show plot
+    # Show plot.
     ay.legend()
     ay.grid(True)
     plt.show()
