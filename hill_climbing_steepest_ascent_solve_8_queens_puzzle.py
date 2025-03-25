@@ -147,7 +147,7 @@ for _ in range(num_instances):
     search_costs.append(search_cost)
     manhattan_costs.append(manhattan_cost)
 
-    if count_attacking_pairs(solution) == 0:  # Solution must have 0 attacking pairs
+    if count_attacking_pairs(solution) == 0:
         solved_count += 1
 
     solutions.append((initial_state, solution, search_cost, execution_time))
