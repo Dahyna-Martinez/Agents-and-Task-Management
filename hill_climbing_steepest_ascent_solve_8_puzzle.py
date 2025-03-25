@@ -122,7 +122,7 @@ axs[0].grid(True)
 
 # **Plot 2: Success Rate (Bar Chart)**
 axs[1].bar(["Solved", "Unsolved"], [success_rate, 100 - success_rate], color=['green', 'red'])
-axs[1].set_ylabel("Percentage (%)")
+
 axs[1].set_title("Percentage of Solved Problems")
 axs[1].set_ylim(0, 100)
 
