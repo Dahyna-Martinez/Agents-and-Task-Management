@@ -180,9 +180,9 @@ fig, axs = plt.subplots(1, 2, figsize=(12, 5))
 
 # Plot 1: Search Cost vs. Attacking Pairs Costs
 axs[0].scatter(optimal_solution_costs, search_costs, color='green', alpha=0.7, label="Search Cost")
-axs[0].set_xlabel("Optimal search cost")
+axs[0].set_xlabel("Optimal Cost")
 axs[0].set_ylabel("Search Cost (Steps Taken)")
-axs[0].set_title("Search Cost vs. Optimal search cost")
+axs[0].set_title("Search Cost vs. Optimal Cost")
 axs[0].legend()
 axs[0].grid(True)
 
