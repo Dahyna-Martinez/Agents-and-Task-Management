@@ -545,11 +545,17 @@ class EightPuzzle(Problem):
 
         return inversion % 2 == 0
 
-    def h(self, node):
-        """ Return the heuristic value for a given state. Default heuristic function used is 
-        h(n) = number of misplaced tiles """
+    # def h(self, node):
+    #     """ Return the heuristic value for a given state. Default heuristic function used is
+    #     h(n) = number of misplaced tiles """
+    #
+    #     return sum(s != g for (s, g) in zip(node.state, self.goal))
+    def h(self, state):
+        return sum(s != g for (s, g) in zip(state, self.goal))
 
-        return sum(s != g for (s, g) in zip(node.state, self.goal))
+    def value(self, state):
+        """ Return the heuristic value for a given state. """
+        return self.h(state)
 
 
 # ______________________________________________________________________________
@@ -698,15 +704,17 @@ def hill_climbing(problem):
     stopping when no neighbor is better.
     """
     current = Node(problem.initial)
+    search_cost = 0
     while True:
         neighbors = current.expand(problem)
+        search_cost += len(neighbors)
         if not neighbors:
             break
         neighbor = argmax_random_tie(neighbors, key=lambda node: problem.value(node.state))
         if problem.value(neighbor.state) <= problem.value(current.state):
             break
         current = neighbor
-    return current.state
+    return current.state, search_cost
 
 
 def exp_schedule(k=20, lam=0.005, limit=100):
