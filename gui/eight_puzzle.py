@@ -3,6 +3,7 @@ import random
 import time
 from functools import partial
 from tkinter import *
+import sys
 
 from search import astar_search, EightPuzzle
 
