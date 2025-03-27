@@ -2,27 +2,27 @@
 ## Programming assignment 4.
 
 To run Simulated Annealing Eight Puzzle exercise:
--1.Go to eight_puzzle_simulated_annealing.py in the GUI folder, code may ask you to download packages.
--2.Run program in current file.
--3.Program will generate a grid for the problem and after pressing the "solve", the program will attempt to find a solution
--4.After the algorithm finishes, the grid will show the attempted solution.
--5.The terminal will posses the moves made, and the number of moves.
--6.The calculation for the comparison plot were made in files "OptimalSolution.py" and "plots.py" in the GUI folder.
+- 1.Go to eight_puzzle_simulated_annealing.py in the GUI folder, code may ask you to download packages.
+- 2.Run program in current file.
+- 3.Program will generate a grid for the problem and after pressing the "solve", the program will attempt to find a solution
+- 4.After the algorithm finishes, the grid will show the attempted solution.
+- 5.The terminal will posses the moves made, and the number of moves.
+- 6.The calculation for the comparison plot were made in files "OptimalSolution.py" and "plots.py" in the GUI folder.
 
 To run Simulated Annealing Eight Queen Variation 1 exercise:
--1.Go to 8queen_simulated_annealing.py in the GUI folder, code may ask you to download packages.
--2.Run program in current file.
--3.Program will generate a grid for the attempted solution.
--4.The terminal will posses the positions of the queens on the board (-1 means that there is no queen), and the search cost.
--5.The calculation for the comparison plot were made in files "OptimalSolution.py" and "plots.py" in the GUI folder.
+- 1.Go to 8queen_simulated_annealing.py in the GUI folder, code may ask you to download packages.
+- 2.Run program in current file.
+- 3.Program will generate a grid for the attempted solution.
+- 4.The terminal will posses the positions of the queens on the board (-1 means that there is no queen), and the search cost.
+- 5.The calculation for the comparison plot were made in files "OptimalSolution.py" and "plots.py" in the GUI folder.
 
 To run Simulated Annealing Eight Queen Variation 2 exercise:
--1.Go to 8queensV2_simulated_annealing.py in the GUI folder, code may ask you to download packages.
--2.Run program in current file.
--3.Program will generate a grid showing the initial state.
--4.After pressing the "solve" button, the board will update to the attempted solution state.
--5.The terminal will posses the positions of the queens on the board, and the search cost.
--5.The calculation for the comparison plot were made in files "OptimalSolution.py" and "plots.py" in the GUI folder.
+- 1.Go to 8queensV2_simulated_annealing.py in the GUI folder, code may ask you to download packages.
+- 2.Run program in current file.
+- 3.Program will generate a grid showing the initial state.
+- 4.After pressing the "solve" button, the board will update to the attempted solution state.
+- 5.The terminal will posses the positions of the queens on the board, and the search cost.
+- 6.The calculation for the comparison plot were made in files "OptimalSolution.py" and "plots.py" in the GUI folder.
 
 To run Steepest Ascent Hill Climbing Eight Puzzle exercise:
 - 1.Go to hill_climbing_steepest_ascent_solve_8_puzzle.py , code may ask you to download packages.
