@@ -25,6 +25,18 @@ To run First Choice Hill Climbing Eight Queen exercise:
 - 3.Program will generate grids for each problem and its attempted solution, and comparison plots.
 - 4.The terminal will posses extra information of each puzzle problem, path cost, heuristic cost, etc.
 
+To run Random Restart Hill Climbing EightPuzzle exercise:
+- 1.Go to hill_climbing_ramdom_restart_visuallizer.py, code may ask you to download packages.
+- 2.Run program in current file.
+- 3.Program will generate grids for each problem and its attempted solution, and a comparison plot.
+- 4.The terminal will posses extra information of each puzzle problem, path cost, heuristic cost, etc.
+
+To run Random Restart Hill Climbing Eight Queen exercise:
+- 1.Go to hill_climbing_ramdom_8_queens.py, code may ask you to download packages.
+- 2.Run program in current file.
+- 3.Program will generate grids for each problem and its attempted solution, and comparison plots.
+- 4.The terminal will posses extra information of each puzzle problem, path cost, heuristic cost, etc.
+
 ## Programming assigment 3.
 
 Go to GUI folder.
