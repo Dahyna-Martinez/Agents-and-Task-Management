@@ -812,7 +812,78 @@ class Sudoku(CSP):
 # ______________________________________________________________________________
 # The Zebra Puzzle
 
+def Zebra_candy():
+    """Return an instance of the Zebra Puzzle adapted to the candy version."""
 
+    Colors = 'Red Yellow Blue Green Ivory'.split()
+    Pets = 'Dog Fox Snails Horse Zebra'.split()
+    Drinks = 'OJ Tea Coffee Milk Water'.split()
+    Countries = 'Englishman Spaniard Norwegian Ukrainian Japanese'.split()
+    Candies = 'Hershey KitKat MilkyWay Smarties Snickers'.split()
+
+    variables = Colors + Pets + Drinks + Countries + Candies
+    domains = {var: list(range(1, 6)) for var in variables}
+
+    # Fixed house positions
+    domains['Norwegian'] = [1]
+    domains['Milk'] = [3]
+
+    # Parse pairwise constraints
+    neighbors = parse_neighbors("""Englishman: Red;
+        Spaniard: Dog; KitKat: Yellow; Hershey: Fox;
+        Norwegian: Blue; Smarties: Snails; Snickers: OJ;
+        Ukrainian: Tea; Japanese: MilkyWay; KitKat: Horse;
+        Coffee: Green; Green: Ivory""")
+
+    # Add uniqueness constraints across categories
+    for category in [Colors, Pets, Drinks, Countries, Candies]:
+        for A in category:
+            for B in category:
+                if A != B:
+                    neighbors.setdefault(A, []).append(B)
+                    neighbors.setdefault(B, []).append(A)
+
+    def zebra_constraint(A, a, B, b, recurse=0):
+        same = (a == b)
+        next_to = abs(a - b) == 1
+
+        if A == 'Englishman' and B == 'Red':
+            return same
+        if A == 'Spaniard' and B == 'Dog':
+            return same
+        if A == 'Norwegian' and B == 'Blue':
+            return next_to
+        if A == 'KitKat' and B == 'Yellow':
+            return same
+        if A == 'Hershey' and B == 'Fox':
+            return next_to
+        if A == 'Smarties' and B == 'Snails':
+            return same
+        if A == 'Snickers' and B == 'OJ':
+            return same
+        if A == 'Ukrainian' and B == 'Tea':
+            return same
+        if A == 'Japanese' and B == 'MilkyWay':
+            return same
+        if A == 'KitKat' and B == 'Horse':
+            return next_to
+        if A == 'Coffee' and B == 'Green':
+            return same
+        if A == 'Green' and B == 'Ivory':
+            return a - 1 == b  # Green is immediately to the right of Ivory
+
+        if recurse == 0:
+            return zebra_constraint(B, b, A, a, recurse=1)
+
+        # Uniqueness constraint within a category
+        categories = [Colors, Pets, Drinks, Countries, Candies]
+        for cat in categories:
+            if A in cat and B in cat:
+                return not same
+
+        return True
+
+    return CSP(variables, domains, neighbors, zebra_constraint)
 def Zebra():
     """Return an instance of the Zebra Puzzle."""
     Colors = 'Red Yellow Blue Green Ivory'.split()

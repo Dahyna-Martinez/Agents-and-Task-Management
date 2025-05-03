@@ -1,4 +1,4 @@
-from csp import Zebra, solve_zebra, backtracking_search, min_conflicts, AC3
+from csp import Zebra_candy, solve_zebra, backtracking_search, min_conflicts, AC3,forward_checking
 import tkinter as tk
 
 '''
@@ -11,7 +11,7 @@ problem. Its just passing the problem to the algorithms.
 
 class ZebraSolver:
     def __init__(self):
-        self.zebra_instance = Zebra()
+        self.zebra_instance = Zebra_candy()
 
     #This def is solving with the backtracking algorithm
     def solve_with_backtracking(self):
@@ -23,7 +23,7 @@ class ZebraSolver:
     #This def is solving with the min conflicts algorithm
     def solve_with_min_conflicts(self):
         print("\n--- Solving with Min Conflicts ---")
-        zebra = Zebra()
+        zebra = Zebra_candy()
         # The steps here aid in solving with this algorithm
         #Represents the number of steps to solve it
         #Tbh this one im eh on cause its not solving it
@@ -35,10 +35,17 @@ class ZebraSolver:
     def solve_with_ac3_backtracking(self):
         print("\n--- Solving with AC3 + Backtracking ---")
         # Fresh instance
-        zebra = Zebra()
+        zebra = Zebra_candy()
         AC3(zebra)
         result = backtracking_search(zebra)
         self.display_result(result, "AC3 + Backtracking")
+        return result
+
+    def solve_with_forward_checking(self):
+        print("\n--- Solving with Forward Checking ---")
+        zebra = Zebra_candy()
+        result = backtracking_search(zebra, inference=forward_checking)
+        self.display_result(result, "Forward Checking")
         return result
 
     #Prints result on the terminal
@@ -109,3 +116,4 @@ if __name__ == '__main__':
     solver.solve_with_backtracking()
     solver.solve_with_min_conflicts()
     solver.solve_with_ac3_backtracking()
+    solver.solve_with_forward_checking()
