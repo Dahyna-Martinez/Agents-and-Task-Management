@@ -169,7 +169,7 @@ def dom_j_up(csp, queue):
     return SortedSet(queue, key=lambda t: neg(len(csp.curr_domains[t[1]])))
 
 
-def AC3(csp, queue=None, removals=None, arc_heuristic=dom_j_up):
+def AC3(csp, queue=None, removals=None, arc_heuristic=dom_j_up,metrics=None):
     """[Figure 6.3]"""
     if queue is None:
         queue = {(Xi, Xk) for Xi in csp.variables for Xk in csp.neighbors[Xi]}
@@ -179,6 +179,8 @@ def AC3(csp, queue=None, removals=None, arc_heuristic=dom_j_up):
     while queue:
         (Xi, Xj) = queue.pop()
         revised, checks = revise(csp, Xi, Xj, removals, checks)
+        if metrics:
+            metrics.steps +1
         if revised:
             if not csp.curr_domains[Xi]:
                 return False, checks  # CSP is inconsistent
@@ -403,7 +405,7 @@ def mac(csp, var, value, assignment, removals, constraint_propagation=AC3b):
 
 
 def backtracking_search(csp, select_unassigned_variable=first_unassigned_variable,
-                        order_domain_values=unordered_domain_values, inference=no_inference):
+                        order_domain_values=unordered_domain_values, inference=no_inference, metrics = None):
     """[Figure 6.5]"""
 
     def backtrack(assignment):
@@ -413,6 +415,8 @@ def backtracking_search(csp, select_unassigned_variable=first_unassigned_variabl
         for value in order_domain_values(var, assignment, csp):
             if 0 == csp.nconflicts(var, value, assignment):
                 csp.assign(var, value, assignment)
+                if metrics:
+                    metrics.steps += 1
                 removals = csp.suppose(var, value)
                 if inference(csp, var, value, assignment, removals):
                     result = backtrack(assignment)
@@ -431,7 +435,7 @@ def backtracking_search(csp, select_unassigned_variable=first_unassigned_variabl
 # Min-conflicts Hill Climbing search for CSPs
 
 
-def min_conflicts(csp, max_steps=100000):
+def min_conflicts(csp, max_steps=100000, metrics = None):
     """Solve a CSP by stochastic Hill Climbing on the number of conflicts."""
     # Generate a complete assignment for all variables (probably with conflicts)
     csp.current = current = {}
@@ -440,6 +444,8 @@ def min_conflicts(csp, max_steps=100000):
         csp.assign(var, val, current)
     # Now repeatedly choose a random conflicted variable and change it
     for i in range(max_steps):
+        if metrics:
+            metrics.steps += 1
         conflicted = csp.conflicted_vars(current)
         if not conflicted:
             return current
