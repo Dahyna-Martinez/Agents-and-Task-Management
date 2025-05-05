@@ -1,4 +1,14 @@
 # Programming assigments Repository
+
+## Programming assignment 6.
+
+To run the Einstein's Puzzle exercise:
+- 1.Within the code search for the zebra_puzzle.py at the bottom of the project.
+- 2.Inside that code, run the program.
+- 3.The terminal will demonstre which algorithm is currently trying to solve the puzzle and each algorithm is also labeled at the top left of the GUI window.
+- 4.When a puzzle is solved a GUI window will present the results, click on the **X** icon on the top right of the GUI window. This will start the execution of the next CSP algorithm.
+- 5.The performance parameters of each algorithm is displayed within the terminal.
+  
 ## Programming assignment 4.
 
 To run Simulated Annealing Eight Puzzle exercise:
@@ -88,7 +98,7 @@ To run exercise 2.11:
 - 1.Select vacuum_agent.py, code may ask you to download packages.
 - 2.If download packages fails, Run the program anyways.
 - 3.In the GUI select which location is dirty and press next to activate the agent.
-- 
+ 
 To run exercise 2.14 no memeory state:
 - 1.Select xy_vacuum_environment_no_state.py code may ask you to download packages.
 - 2.If download packages fails, Run the program anyways.
