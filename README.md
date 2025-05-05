@@ -1,11 +1,11 @@
-# Programming assigments Repository
+# Programming assignments Repository
 
 ## Programming assignment 6.
 
 To run the Einstein's Puzzle exercise:
 - 1.Within the code search for the zebra_puzzle.py at the bottom of the project.
 - 2.Inside that code, run the program.
-- 3.The terminal will demonstre which algorithm is currently trying to solve the puzzle and each algorithm is also labeled at the top left of the GUI window.
+- 3.The terminal will demonstrate which algorithm is currently trying to solve the puzzle and each algorithm is also labeled at the top left of the GUI window.
 - 4.When a puzzle is solved a GUI window will present the results, click on the **X** icon on the top right of the GUI window. This will start the execution of the next CSP algorithm.
 - 5.The performance parameters of each algorithm is displayed within the terminal.
   
